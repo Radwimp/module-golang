@@ -1,26 +1,16 @@
 package cipher
 
-type Cipher interface {
-	Encode(string) string
-	Decode(string) string
+type MyShift struct {
+	v int
 }
 
-type MyCaesar struct {
-}
-
-var (
-	i   int
-	c   byte
-	key byte
-)
-
-func (a MyCaesar) Encode(s string) string {
+func (a MyShift) Encode(s string) string {
 	res := ""
-	key = 3
+	key = byte(a.v);
 	for i = 0; i < len(s); i++ {
 		c = s[i]
-		if c > 64 && c < 91 {
-			c += 32
+    if c > 64 && c < 91 {
+      c += 32
 		}
 		c += key
 		if c > 122 {
@@ -36,9 +26,9 @@ func (a MyCaesar) Encode(s string) string {
 	return res
 }
 
-func (a MyCaesar) Decode(s string) string {
+func (a MyShift) Decode(s string) string {
 	res := ""
-	key = 3
+	key = byte(a.v);
 	for i = 0; i < len(s); i++ {
 		c = s[i]
 		c -= key
@@ -55,6 +45,10 @@ func (a MyCaesar) Decode(s string) string {
 	return res
 }
 
-func NewCaesar() Cipher {
-	return MyCaesar{}
+func NewShift(v int) Cipher {
+	if v > 25 || v < -25 || v == 0 {
+		return nil
+	}
+	return MyShift{v}
 }
+
